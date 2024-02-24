@@ -5,14 +5,15 @@ import Firebender from './character/Firebender';
 import Waterbender from './character/Waterbender';
 import Nonbender from './character/Nonbender';
 import DOMHandler from './DomHandler';
+import CharacterManager from './CharacterManager';
+
 
 let avatarInstance: Avatar | null = null;
 
-// Define CharacterType outside of any function
-type CharacterType = 'Airbender' | 'Earthbender' | 'Firebender' | 'Waterbender' | 'Nonbender' | 'Avatar';
+// Define CharacterBending outside of any function
+type CharacterBending = 'Airbender' | 'Earthbender' | 'Firebender' | 'Waterbender' | 'Nonbender' | 'Avatar';
 
-function populateNations(characterType: CharacterType) {
-    console.log(`populateNations called with characterType: ${characterType}`); // 1. Start of function
+function populateNations(characterBending: CharacterBending) {
 
     const nationSelect = document.getElementById('nation') as HTMLSelectElement;
     if (!nationSelect) {
@@ -21,9 +22,8 @@ function populateNations(characterType: CharacterType) {
     }
     
     nationSelect.innerHTML = ''; // Clear existing options
-    console.log('Cleared nationSelect options'); // 2. After fetching nationSelect
 
-    const nationsByType = {
+    const nationsByBending = {
         'Airbender': ['Air Temples', 'Republic City'],
         'Earthbender': ['Earth Kingdom', 'Republic City'],
         'Firebender': ['Fire Nation', 'Republic City'],
@@ -32,9 +32,8 @@ function populateNations(characterType: CharacterType) {
         'Avatar': ['Republic City', 'Earth Kingdom', 'Fire Nation', 'Air Temples', 'Water Tribes']
     };
 
-    const nations = nationsByType[characterType] || [];
+    const nations = nationsByBending[characterBending] || [];
     nations.forEach((nation: string) => {
-        console.log(`Adding nation: ${nation}`); // 3. Inside forEach loop
         const option = document.createElement('option');
         option.value = nation;
         option.textContent = nation;
@@ -43,22 +42,21 @@ function populateNations(characterType: CharacterType) {
 }
 
 // Function to handle character selection
-function handleCharacterSelection(type: string, name: string, nation: string, bendingStyle: string) {
-
+function handleCharacterSelection(name: string, nation: string, bendingStyle: CharacterBending) {
     let character = null;
 
-    switch (type) {
+    switch (bendingStyle) {
         case 'Airbender':
-            character = new Airbender(name, nation === 'Republic City' ? nation : 'Air Temples', [], []);
+            character = new Airbender(name, nation, [], []);
             break;
         case 'Earthbender':
-            character = new Earthbender(name, nation === 'Republic City' ? nation : 'Earth Kingdom', [], []);
+            character = new Earthbender(name, nation, [], []);
             break;
         case 'Firebender':
-            character = new Firebender(name, nation === 'Republic City' ? nation : 'Fire Nation', [], []);
+            character = new Firebender(name, nation, [], []);
             break;
         case 'Waterbender':
-            character = new Waterbender(name, nation === 'Republic City' ? nation : 'Water Tribes', [], []);
+            character = new Waterbender(name, nation, [], []);
             break;
         case 'Nonbender':
             character = new Nonbender(name, nation, [], []);
@@ -66,17 +64,17 @@ function handleCharacterSelection(type: string, name: string, nation: string, be
         case 'Avatar':
             if (!avatarInstance) {
                 avatarInstance = Avatar.getInstance(name, nation, bendingStyle, [], []);
+                character = avatarInstance;
             } else {
                 console.error('An Avatar already exists.');
-                return; // Optionally handle this case in the UI
+                return null; // Return null to indicate failure
             }
-            character = avatarInstance;
             break;
     }
 
     const avatarStateSection = document.getElementById('avatar-state-section');
     if (avatarStateSection) {
-        avatarStateSection.style.display = type === "Avatar" ? 'block' : 'none';
+        avatarStateSection.style.display = bendingStyle === "Avatar" ? 'block' : 'none';
     } else {
         console.error('Avatar state section element not found.');
     }
@@ -84,14 +82,16 @@ function handleCharacterSelection(type: string, name: string, nation: string, be
     if (character) {
         DOMHandler.displayCharacter(character, 'character-display');
     }
-    
+
     // After character creation, call functions to handle learning moves
-    showOffenseMoves(type as CharacterType);
-    showDefenseMoves(type as CharacterType);
-  }
+    showOffenseMoves(bendingStyle);
+    showDefenseMoves(bendingStyle);
+
+    return character; // Ensure this function returns the created character or null
+}
   
-// Define available moves for each character type
-const offenseMovesByType = {
+// Define available moves for each character bending
+const offenseMovesByBending = {
     'Airbender': ['Air Slices', 'Vacuum Sphere', 'Sonic Boom'],
     'Earthbender': ['Rock Bullets', 'Lavabending', 'Seismic Sense'],
     'Firebender': ['Fire Jets', 'Lightning Generation', 'Combustion Blast'],
@@ -100,7 +100,7 @@ const offenseMovesByType = {
     'Avatar': ['Air Slices', 'Rock Bullets', 'Fire Jets', 'Ice Spears'] // Including all moves
 };
 
-const defenseMovesByType = {
+const defenseMovesByBending = {
     'Airbender': ['Air Shield', 'Flight', 'Spiritual Projection'],
     'Earthbender': ['Earth Wall', 'Metal Armor', 'Sand Cloud'],
     'Firebender': ['Fire Shield', 'Heat Control', 'Lightning Redirection'],
@@ -109,10 +109,10 @@ const defenseMovesByType = {
     'Avatar': ['Air Shield', 'Earth Wall', 'Fire Shield', 'Water Shield'] // Including all moves 
 };
 
-function showOffenseMoves(characterType: CharacterType) {
+function showOffenseMoves(characterBending: CharacterBending) {
     const offenseMoveSelect = document.getElementById('offense-moves') as HTMLSelectElement;
     offenseMoveSelect.innerHTML = ''; // Clear existing options
-    const moves = offenseMovesByType[characterType] ?? []; // Correctly indexed with CharacterType
+    const moves = offenseMovesByBending[characterBending] ?? []; // Correctly indexed with CharacterBending
 
     moves.forEach((move: string) => {
         const option = document.createElement('option');
@@ -123,10 +123,10 @@ function showOffenseMoves(characterType: CharacterType) {
 }
 
 
-function showDefenseMoves(characterType: CharacterType) {
+function showDefenseMoves(characterBending: CharacterBending) {
     const defenseMoveSelect = document.getElementById('defense-moves') as HTMLSelectElement;
     defenseMoveSelect.innerHTML = ''; // Clear existing options
-    const moves = defenseMovesByType[characterType] ?? []; // Correctly indexed with CharacterType
+    const moves = defenseMovesByBending[characterBending] ?? []; // Correctly indexed with CharacterBending
 
     moves.forEach((move: string) => {
         const option = document.createElement('option');
@@ -136,33 +136,57 @@ function showDefenseMoves(characterType: CharacterType) {
     });
 }
 
-// Correct the ID for the character type select
-document.getElementById('character-type')?.addEventListener('change', (e) => {
+// get character bending
+document.getElementById('character-bending')?.addEventListener('change', (e) => {
     const selectElement = e.target as HTMLSelectElement;
-    const characterType = selectElement.value as CharacterType;
-    populateNations(characterType);
+    const characterBending = selectElement.value as CharacterBending;
+    populateNations(characterBending);
 });
 
-// Correct the ID for the character name input
-document.getElementById('create-character-btn')?.addEventListener('click', () => {
-    const typeSelect = document.getElementById('character-type') as HTMLSelectElement; // Corrected ID
-    const nameInput = document.getElementById('character-name') as HTMLInputElement; // Corrected ID
-    const nationSelect = document.getElementById('nation') as HTMLSelectElement;
-    let bendingStyle = ""; // Initialize bendingStyle
+// create character button
+const characterManager = new CharacterManager();
 
-    // Check if bendingStyleSelect exists and is relevant based on the type selected
-    if (typeSelect.value === "Avatar") {
-        const bendingStyleSelect = document.getElementById('bending-style-select') as HTMLSelectElement;
-        bendingStyle = bendingStyleSelect.value;
+// Adjusted event listener for character creation
+document.getElementById('create-character-btn')?.addEventListener('click', (e) => {
+    e.preventDefault(); // Prevent form from submitting traditionally, which refreshes the page
+
+    const bendingSelect = document.getElementById('character-bending') as HTMLSelectElement; // Corrected ID to 'character-bending'
+    const nameInput = document.getElementById('character-name-input') as HTMLInputElement;
+    const nationSelect = document.getElementById('nation') as HTMLSelectElement; // Corrected ID to 'nation'
+
+    // Use the bendingSelect value directly as bendingStyle
+    const bendingStyle = bendingSelect.value as CharacterBending;
+
+    // Call handleCharacterSelection with the corrected arguments
+    const character = handleCharacterSelection(nameInput.value, nationSelect.value, bendingStyle);
+
+    if (character) {
+        characterManager.addCharacter(character);
+        console.log('Character created:', character);
+        console.log('All characters:', characterManager.listCharacters());
+    } else {
+        console.error("Character creation failed.");
+    }
+});
+
+
+// After the document has fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+
+    const characterBendingSelect = document.getElementById('character-bending') as HTMLSelectElement;
+
+    // Check if characterBendingSelect is not null
+    if (!characterBendingSelect) {
+        console.error('Character Bending select element not found');
+        return;
     }
 
-    handleCharacterSelection(typeSelect.value, nameInput.value, nationSelect.value, bendingStyle);
-});
+    // Get the initial character bending from the select element
+    const initialCharacterBending = characterBendingSelect.value as CharacterBending;
 
+    // Populate nations for the initial character bending
+    populateNations(initialCharacterBending);
 
-// Initialize nations for the default character type when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    const characterTypeSelect = document.getElementById('character-type-select') as HTMLSelectElement;
-    const initialCharacterType = characterTypeSelect.value as CharacterType; // Asserting the type
-    populateNations(initialCharacterType);
+    characterBendingSelect.value = 'Avatar'; // Set default to Avatar
+    populateNations('Avatar'); // Populate nations for Avatar
 });
