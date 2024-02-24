@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="Description" content="Enter your description here"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="bundle.js" defer></script>
+<link rel="stylesheet" href="./static/main.css">
+<title>The World of Avatar</title>
+</head>
+<body class="bg-dark text-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="text-center mt-5">Create Your Character</h1>
+                    <form id="character-form">
+                        <label for="character-name">Name:</label>
+                        <input type="text" id="character-name" name="character-name" required>
+
+                        <label for="character-type">Type:</label>
+                        <select id="character-type" name="character-type" required>
+                            <option value="Airbender">Airbender</option>
+                            <option value="Earthbender">Earthbender</option>
+                            <option value="Firebender">Firebender</option>
+                            <option value="Waterbender">Waterbender</option>
+                            <option value="Nonbender">Nonbender</option>
+                            <option value="Avatar">Avatar</option>
+                        </select>
+
+                        <label for="nation">Nation:</label>
+                        <select id="nation" name="nation" required>
+                            <!-- Populate based on character type selection -->
+                        </select>
+
+                        <!-- Offense and defense move selection elements will be added dynamically -->
+
+                        <button type="submit">Create Character</button>
+                    </form>
+
+                    <div id="character-display" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+</body>
+</html>
