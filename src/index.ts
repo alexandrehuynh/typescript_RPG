@@ -43,6 +43,7 @@ function populateNations(characterBending: CharacterBending) {
 
 // Function to handle character selection
 function handleCharacterSelection(name: string, nation: string, bendingStyle: CharacterBending) {
+    console.log(`Handling character selection - Name: ${name}, Nation: ${nation}, Bending Style: ${bendingStyle}`);
     let character = null;
 
     switch (bendingStyle) {
@@ -80,7 +81,9 @@ function handleCharacterSelection(name: string, nation: string, bendingStyle: Ch
     }
 
     if (character) {
+        console.log('Updating UI with the created character');
         DOMHandler.displayCharacter(character, 'character-display');
+        console.log('UI should be updated now');
     }
 
     // After character creation, call functions to handle learning moves
@@ -148,22 +151,30 @@ const characterManager = new CharacterManager();
 
 // Adjusted event listener for character creation
 document.getElementById('create-character-btn')?.addEventListener('click', (e) => {
+    
+    console.log('Create character button clicked');
     e.preventDefault(); // Prevent form from submitting traditionally, which refreshes the page
 
     const bendingSelect = document.getElementById('character-bending') as HTMLSelectElement; // Corrected ID to 'character-bending'
+    
     const nameInput = document.getElementById('character-name-input') as HTMLInputElement;
-    const nationSelect = document.getElementById('nation') as HTMLSelectElement; // Corrected ID to 'nation'
-
-    // Use the bendingSelect value directly as bendingStyle
+    const nationSelect = document.getElementById('nation') as HTMLSelectElement;
     const bendingStyle = bendingSelect.value as CharacterBending;
+    console.log(`Form values - Name: ${nameInput.value}, Nation: ${nationSelect.value}, Bending Style: ${bendingStyle}`);
+    
 
     // Call handleCharacterSelection with the corrected arguments
     const character = handleCharacterSelection(nameInput.value, nationSelect.value, bendingStyle);
-
+    if (character) {
+        console.log('Character created successfully:', character);
+    } else {
+        console.log('Failed to create character');
+    }
     if (character) {
         characterManager.addCharacter(character);
         console.log('Character created:', character);
         console.log('All characters:', characterManager.listCharacters());
+        console.log('After adding, characters list:', characterManager.listCharacters());
     } else {
         console.error("Character creation failed.");
     }
