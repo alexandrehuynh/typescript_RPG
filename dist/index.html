@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<meta name="Description" content="Enter your description here"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<script src="bundle.js" defer></script>
-<link rel="stylesheet" href="./static/main.css">
-<title>The World of Avatar</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="Description" content="Create your character in the World of Avatar">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="bundle.js" defer></script>
+    <link rel="stylesheet" href="./static/main.css">
+    <title>The World of Avatar</title>
 </head>
 <body class="bg-dark text-light">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h1 class="text-center mt-5">Create Your Character</h1>
-                    <form id="character-form">
-                        <label for="character-name">Name:</label>
-                        <input type="text" id="character-name" name="character-name" required>
+                <h1 class="text-center mt-5 mb-3">Create Your Character</h1>
+                <form id="character-form">
+                    <div class="mb-3">
+                        <label for="character-name" class="form-label">Name:</label>
+                        <input type="text" class="form-control" id="character-name" name="character-name" required>
+                    </div>
 
-                        <label for="character-type">Type:</label>
-                        <select id="character-type" name="character-type" required>
+                    <div class="mb-3">
+                        <label for="character-type" class="form-label">Type:</label>
+                        <select class="form-select" id="character-type" name="character-type" required>
                             <option value="Airbender">Airbender</option>
                             <option value="Earthbender">Earthbender</option>
                             <option value="Firebender">Firebender</option>
@@ -29,23 +32,43 @@
                             <option value="Nonbender">Nonbender</option>
                             <option value="Avatar">Avatar</option>
                         </select>
+                    </div>
 
-                        <label for="nation">Nation:</label>
-                        <select id="nation" name="nation" required>
-                            <!-- Populate based on character type selection -->
+                    <div class="mb-3">
+                        <label for="nation" id = "nation" class="form-label">Nation:</label>
+                        <select class="form-select" id="nation" name="nation" required>
+                            <!-- Nations will be populated based on character type selection -->
                         </select>
+                    </div>
 
-                        <!-- Offense and defense move selection elements will be added dynamically -->
+                    <div id="move-selects" style="display: none;">
+                        <div class="mb-3">
+                            <label for="offense-moves" class="form-label">Offense Moves:</label>
+                            <select class="form-select" id="offense-moves">
+                                <!-- Offense moves will be added dynamically -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="defense-moves" class="form-label">Defense Moves:</label>
+                            <select class="form-select" id="defense-moves">
+                                <!-- Defense moves will be added dynamically -->
+                            </select>
+                        </div>
+                    </div>
 
-                        <button type="submit">Create Character</button>
-                    </form>
+                    <div id="avatar-state-section" style="display: none;" class="mb-3">
+                        <h3>Avatar State</h3>
+                        <p>This unique ability grants the Avatar the combined knowledge and abilities of all past Avatars. It's automatically available to the Avatar and provides a significant power boost.</p>
+                    </div>
 
-                    <div id="character-display" class="mt-3"></div>
-                </div>
+                    <button type="submit" class="btn btn-primary">Create Character</button>
+                </form>
+
+                <div id="character-display" class="mt-3"></div>
             </div>
         </div>
     </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
 </body>
 </html>

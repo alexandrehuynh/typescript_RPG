@@ -6,37 +6,44 @@ import Waterbender from './character/Waterbender';
 import Nonbender from './character/Nonbender';
 import DOMHandler from './DomHandler';
 
-// Placeholder for the single Avatar instance
 let avatarInstance: Avatar | null = null;
 
-// Define a type that includes all possible keys for character types
+// Define CharacterType outside of any function
 type CharacterType = 'Airbender' | 'Earthbender' | 'Firebender' | 'Waterbender' | 'Nonbender' | 'Avatar';
 
+function populateNations(characterType: CharacterType) {
+    console.log(`populateNations called with characterType: ${characterType}`); // 1. Start of function
 
-// Function to populate nations based on character type
-function populateNations(characterType: string) {
     const nationSelect = document.getElementById('nation') as HTMLSelectElement;
+    if (!nationSelect) {
+        console.error('nation select element not found'); // Error if the element is not found
+        return;
+    }
+    
     nationSelect.innerHTML = ''; // Clear existing options
+    console.log('Cleared nationSelect options'); // 2. After fetching nationSelect
 
     const nationsByType = {
         'Airbender': ['Air Temples', 'Republic City'],
         'Earthbender': ['Earth Kingdom', 'Republic City'],
         'Firebender': ['Fire Nation', 'Republic City'],
         'Waterbender': ['Water Tribes', 'Republic City'],
-        'Nonbender': ['Any'],
-        'Avatar': ['Any']
+        'Nonbender': ['Republic City', 'Earth Kingdom', 'Fire Nation', 'Air Temples', 'Water Tribes'],
+        'Avatar': ['Republic City', 'Earth Kingdom', 'Fire Nation', 'Air Temples', 'Water Tribes']
     };
 
-    (nationsByType[characterType] || []).forEach((nation: string) => {
+    const nations = nationsByType[characterType] || [];
+    nations.forEach((nation: string) => {
+        console.log(`Adding nation: ${nation}`); // 3. Inside forEach loop
         const option = document.createElement('option');
         option.value = nation;
         option.textContent = nation;
         nationSelect.appendChild(option);
     });
 }
-  
-  // Function to handle character selection
-  function handleCharacterSelection(type: string, name: string, nation: string, bendingStyle: string) {
+
+// Function to handle character selection
+function handleCharacterSelection(type: string, name: string, nation: string, bendingStyle: string) {
 
     let character = null;
 
@@ -67,50 +74,80 @@ function populateNations(characterType: string) {
             break;
     }
 
+    const avatarStateSection = document.getElementById('avatar-state-section');
+    if (avatarStateSection) {
+        avatarStateSection.style.display = type === "Avatar" ? 'block' : 'none';
+    } else {
+        console.error('Avatar state section element not found.');
+    }
+
     if (character) {
         DOMHandler.displayCharacter(character, 'character-display');
     }
     
     // After character creation, call functions to handle learning moves
-    showOffenseMoves(type);
-    showDefenseMoves(type);
+    showOffenseMoves(type as CharacterType);
+    showDefenseMoves(type as CharacterType);
   }
   
-  // Functions to show move options
-  function showOffenseMoves(characterType: string) {
-    // Populate offense moves based on characterType
-    // ...
-  }
-  
-  function showDefenseMoves(characterType: string) {
-    // Populate defense moves based on characterType
-    // ...
-  }
-  
-  // Event listener for character type change to update nations
-  document.getElementById('character-type-select')?.addEventListener('change', (event) => {
-    const selectedType = (event.target as HTMLSelectElement).value as CharacterType;
-    populateNations(selectedType);
-  });
-  
-  // Call this function when the page loads to initialize nations for the default character type
-  document.addEventListener('DOMContentLoaded', () => {
-    const initialCharacterType = (document.getElementById('character-type') as HTMLSelectElement).value;
-    populateNations(initialCharacterType);
-  });
-  
+// Define available moves for each character type
+const offenseMovesByType = {
+    'Airbender': ['Air Slices', 'Vacuum Sphere', 'Sonic Boom'],
+    'Earthbender': ['Rock Bullets', 'Lavabending', 'Seismic Sense'],
+    'Firebender': ['Fire Jets', 'Lightning Generation', 'Combustion Blast'],
+    'Waterbender': ['Ice Spears', 'Water Whip', 'Bloodbending'],
+    'Nonbender': ['Chi Blocking', 'Swordsmanship', 'Electrified Weapons'],
+    'Avatar': ['Air Slices', 'Rock Bullets', 'Fire Jets', 'Ice Spears'] // Including all moves
+};
 
-  // Call populateNations initially for the default selected character type
-    document.addEventListener('DOMContentLoaded', () => {
-    const characterTypeSelect = document.getElementById('character-type-select') as HTMLSelectElement;
-    const initialCharacterType = characterTypeSelect.value;
-    populateNations(initialCharacterType);
+const defenseMovesByType = {
+    'Airbender': ['Air Shield', 'Flight', 'Spiritual Projection'],
+    'Earthbender': ['Earth Wall', 'Metal Armor', 'Sand Cloud'],
+    'Firebender': ['Fire Shield', 'Heat Control', 'Lightning Redirection'],
+    'Waterbender': ['Healing Waters', 'Spirit Bending', 'Water Shield'],
+    'Nonbender': ['Martial Arts', 'Smoke Bombs', 'Shield Use'],
+    'Avatar': ['Air Shield', 'Earth Wall', 'Fire Shield', 'Water Shield'] // Including all moves 
+};
 
-  // Event listener for character creation button click
-  document.getElementById('create-character-btn')?.addEventListener('click', () => {
-    const typeSelect = document.getElementById('character-type-select') as HTMLSelectElement;
-    const nameInput = document.getElementById('character-name-input') as HTMLInputElement;
-    const nationSelect = document.getElementById('nation-select') as HTMLSelectElement;
+function showOffenseMoves(characterType: CharacterType) {
+    const offenseMoveSelect = document.getElementById('offense-moves') as HTMLSelectElement;
+    offenseMoveSelect.innerHTML = ''; // Clear existing options
+    const moves = offenseMovesByType[characterType] ?? []; // Correctly indexed with CharacterType
+
+    moves.forEach((move: string) => {
+        const option = document.createElement('option');
+        option.value = move;
+        option.textContent = move;
+        offenseMoveSelect.appendChild(option);
+    });
+}
+
+
+function showDefenseMoves(characterType: CharacterType) {
+    const defenseMoveSelect = document.getElementById('defense-moves') as HTMLSelectElement;
+    defenseMoveSelect.innerHTML = ''; // Clear existing options
+    const moves = defenseMovesByType[characterType] ?? []; // Correctly indexed with CharacterType
+
+    moves.forEach((move: string) => {
+        const option = document.createElement('option');
+        option.value = move;
+        option.textContent = move;
+        defenseMoveSelect.appendChild(option);
+    });
+}
+
+// Correct the ID for the character type select
+document.getElementById('character-type')?.addEventListener('change', (e) => {
+    const selectElement = e.target as HTMLSelectElement;
+    const characterType = selectElement.value as CharacterType;
+    populateNations(characterType);
+});
+
+// Correct the ID for the character name input
+document.getElementById('create-character-btn')?.addEventListener('click', () => {
+    const typeSelect = document.getElementById('character-type') as HTMLSelectElement; // Corrected ID
+    const nameInput = document.getElementById('character-name') as HTMLInputElement; // Corrected ID
+    const nationSelect = document.getElementById('nation') as HTMLSelectElement;
     let bendingStyle = ""; // Initialize bendingStyle
 
     // Check if bendingStyleSelect exists and is relevant based on the type selected
@@ -122,7 +159,10 @@ function populateNations(characterType: string) {
     handleCharacterSelection(typeSelect.value, nameInput.value, nationSelect.value, bendingStyle);
 });
 
-    characterTypeSelect.addEventListener('change', (event) => {
-        populateNations((event.target as HTMLSelectElement).value);
-    });
+
+// Initialize nations for the default character type when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    const characterTypeSelect = document.getElementById('character-type-select') as HTMLSelectElement;
+    const initialCharacterType = characterTypeSelect.value as CharacterType; // Asserting the type
+    populateNations(initialCharacterType);
 });
