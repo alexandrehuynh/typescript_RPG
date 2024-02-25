@@ -32,7 +32,7 @@ h1 {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    color: #000000; 
+    color: #ffffff; 
 }
 
 #characters-container {
@@ -44,7 +44,7 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    color: #000000; 
+    color: #ffffff; 
     /* Add any additional styles needed for the container */
 }
 
@@ -57,7 +57,7 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    color: #000000; 
+    color: #ffffff; 
 }
 
 .button {

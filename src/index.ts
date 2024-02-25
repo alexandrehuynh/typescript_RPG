@@ -169,7 +169,8 @@ function handleCharacterSelection(
             character = avatarInstance;
           } else {
             console.error('An Avatar already exists.');
-            return null; // Return null to indicate failure
+            throw new Error("There can only be one Avatar.");
+            // return null; // Return null to indicate failure
           }
           break;
     }
@@ -184,7 +185,6 @@ function handleCharacterSelection(
     if (character) {
         // console.log('Updating UI with the created character');
         DOMHandler.displayCharacter(character, 'character-display');
-        // DOMHandler.displayCharacter(character, 'characters-container');
         // console.log('UI should be updated now');
     }
 
@@ -234,16 +234,6 @@ function showDefenseMoves(characterBending: CharacterBending) {
         defenseMoveSelect.appendChild(option);
     });
 }
-
-// Function to get the selected moves from the select elements
-// function getSelectedMoves<T extends IAttackMechanism | IDefenseMechanism>(
-//     selectElementId: string,
-//     movesMap: Record<string, T>
-//   ): T[] {
-//     const selectElement = document.getElementById(selectElementId) as HTMLSelectElement;
-//     return Array.from(selectElement.selectedOptions).map(option => movesMap[option.value]) as T[];
-//   }
-  
 
 // DOM for Character Bending
 document.getElementById('character-bending')?.addEventListener('change', (e) => {
@@ -376,7 +366,5 @@ document.addEventListener('DOMContentLoaded', () => {
       showDefenseMoves(selectedBending);
     });
 });
-
-
   
 
