@@ -1,7 +1,9 @@
 import IAttackMechanism from '../interfaces/IAttackMechanism';
 import IDefenseMechanism from '../interfaces/IDefenseMechanism';
+import { v4 as uuidv4 } from 'uuid';
 
 class Character {
+  readonly id: string;
   name: string;
   private _nation: string;
   bendingStyle: string;
@@ -10,6 +12,7 @@ class Character {
   experiencePoints: number = 0;
 
   constructor(name: string, nation: string, bendingStyle: string) {
+    this.id = uuidv4(); // Unique identifier for each defense instance
     this.name = name;
     this._nation = nation;
     this.bendingStyle = bendingStyle;

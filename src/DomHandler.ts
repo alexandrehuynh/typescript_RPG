@@ -39,6 +39,29 @@ class DOMHandler {
             container.appendChild(card);
         });
     }
+
+    static updateCharacterCard(card: HTMLElement, character: Character): void {
+        // Update basic character information with null checks
+        const nameElement = card.querySelector('h2');
+        const nationElement = card.querySelector('p.nation');
+        const bendingStyleElement = card.querySelector('p.bendingStyle');
+        const offenseMovesElement = card.querySelector('p.offenseMoves');
+        const defenseMovesElement = card.querySelector('p.defenseMoves');
+
+        if (nameElement) nameElement.textContent = character.name;
+        if (nationElement) nationElement.textContent = `Nation: ${character.nation}`;
+        if (bendingStyleElement) bendingStyleElement.textContent = `Bending Style: ${character.bendingStyle}`;
+
+        // Update offense moves
+        if (offenseMovesElement) {
+            offenseMovesElement.textContent = `Offense Moves: ${character.offenseMoves.map(move => move.name).join(', ')}`;
+        }
+
+        // Update defense moves
+        if (defenseMovesElement) {
+            defenseMovesElement.textContent = `Defense Moves: ${character.defenseMoves.map(move => move.name).join(', ')}`;
+        }
+    }
 }
 
 export default DOMHandler;

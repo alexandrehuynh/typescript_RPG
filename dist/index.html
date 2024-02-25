@@ -25,7 +25,7 @@
                     <div class="mb-3">
                         <label for="character-bending" class="form-label">Bending:</label>
                         <select class="form-select" id="character-bending" name="character-bending" required>
-                            <option value="Avatar">Avatar</option>
+                            <option value="Avatar" selected>Avatar</option>
                             <option value="Airbender">Airbender</option>
                             <option value="Earthbender">Earthbender</option>
                             <option value="Firebender">Firebender</option>
@@ -56,7 +56,7 @@
                         </div>
                     </div>
 
-                    <div id="avatar-state-section" style="display: none;" class="mb-3">
+                    <div id="avatar-state-section" style="display: none;" class="mb-3 transparent-box">
                         <h3>Avatar State</h3>
                         <p>This unique ability grants the Avatar the combined knowledge and abilities of all past Avatars. 
                             It's automatically available to the Avatar and provides a significant power boost.</p>
@@ -64,8 +64,10 @@
 
                     <button type="submit" id = "create-character-btn" class="btn btn-primary">Create Character</button>
                 </form>
-
-                <div id="character-display" class="mt-3"></div>
+                <br><h5>Welcome to the World of Avatar</h5>
+                <div id="character-display" class="mb-3 transparent-box"></div><br>
+                <h5>List of Characters</h5>
+                <div id="characters-container" class="mb-3 transparent-box"></div>
             </div>
         </div>
     </div>

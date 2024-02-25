@@ -1,16 +1,30 @@
-body, html {
-    height: 100%;
-    background-color: #022B3A; /* Deep blue reminiscent of water and the night sky */
+html, body {
+    min-height: 100vh; /* Minimum height of the viewport */
+    margin: 0; /* Reset default margin */
+    background-color: #022B3A; /* Deep blue background color */
+}
+
+body {
+    background-image: url('./images/elements_colored.jpg');
+    background-size: cover; /* contain the entire area of the body */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-attachment: fixed; /* Fix the background during scroll */
+    background-position: center; /* Center the background image */
 }
 
 .container {
-    color: #FFFFFF; /* Ensures text is white for contrast */
+    color: #FFFFFF; 
     padding-top: 20px;
 }
 
 h1 {
-    color: #4FBDBA; /* Light blue for a water tribe vibe */
+    color: #ffffff;
     margin-bottom: 30px;
+}
+
+.transparent-box {
+    background-color: rgba(255, 255, 255, 0.5);
+    opacity: .75;
 }
 
 #character-display {
@@ -18,6 +32,32 @@ h1 {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    color: #000000; 
+}
+
+#characters-container {
+    background-color: #034B61; /* A darker shade of blue for the list background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: #000000; 
+    /* Add any additional styles needed for the container */
+}
+
+#avatar-state-section{
+    background-color: #034B61; /* A darker shade of blue for the list background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: #000000; 
 }
 
 .button {

@@ -184,6 +184,7 @@ function handleCharacterSelection(
     if (character) {
         // console.log('Updating UI with the created character');
         DOMHandler.displayCharacter(character, 'character-display');
+        // DOMHandler.displayCharacter(character, 'characters-container');
         // console.log('UI should be updated now');
     }
 
@@ -343,7 +344,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Character created successfully:', character);
         characterManager.addCharacter(character);
         console.log('Character created:', character);
-        console.log('All characters:', characterManager.listCharacters());
     } else {
         console.error("Character creation failed.");
     }
@@ -353,10 +353,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // DOM after page is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Get the character bending select element
     const characterBendingSelect = document.getElementById('character-bending') as HTMLSelectElement;
-    
-    // Check if the select element exists
+  
     if (!characterBendingSelect) {
       console.error('Character Bending select element not found');
       return;
@@ -364,19 +362,21 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Get the initial character bending value
     const initialCharacterBending = characterBendingSelect.value as CharacterBending;
-    
+  
     // Populate nations and moves based on the initial character bending value
     populateNations(initialCharacterBending);
     showOffenseMoves(initialCharacterBending);
     showDefenseMoves(initialCharacterBending);
   
-    // Change event for character bending select
+    // Event listener for changes in the bending selection
     characterBendingSelect.addEventListener('change', (e) => {
       const selectedBending = (e.target as HTMLSelectElement).value as CharacterBending;
       populateNations(selectedBending);
       showOffenseMoves(selectedBending);
       showDefenseMoves(selectedBending);
     });
-  });
+});
+
+
   
 
