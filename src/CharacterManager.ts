@@ -16,6 +16,7 @@ class CharacterManager {
     const characterIndex = this.characters.findIndex(character => character.name === name);
     if (characterIndex !== -1) {
       // Update only the properties that are passed in newCharacterData
+      // This creates a new object combining existing character data with newCharacterData
       this.characters[characterIndex] = { ...this.characters[characterIndex], ...newCharacterData };
     } else {
       console.warn(`Character with name ${name} not found.`);
@@ -35,7 +36,14 @@ class CharacterManager {
 
 // Character base class
 class Character {
-  constructor(public name: string, public nation: string, public bendingStyle: string) {}
+  constructor(public name: string, public nation: string, public bendingStyle: string, public offenseMoves: Move[] = [], public defenseMoves: Move[] = []) {}
+
+  // Assuming Move is a class or type for character moves. You would need to define this based on your application's needs.
+}
+
+// Example Move class/type, adjust according to your actual data structure
+class Move {
+  constructor(public name: string, public damagePoints: number) {}
 }
 
 export default CharacterManager;
