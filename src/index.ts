@@ -100,7 +100,8 @@ const offenseMovesByBending = {
     'Firebender': ['Fire Jets', 'Lightning Generation', 'Combustion Blast'],
     'Waterbender': ['Ice Spears', 'Water Whip', 'Bloodbending'],
     'Nonbender': ['Chi Blocking', 'Swordsmanship', 'Electrified Weapons'],
-    'Avatar': ['Air Slices', 'Rock Bullets', 'Fire Jets', 'Ice Spears'] // Including all moves
+    'Avatar': ['Air Slices', 'Vacuum Sphere', 'Sonic Boom', 'Rock Bullets', 'Lavabending', 'Seismic Sense', 
+            'Fire Jets', 'Lightning Generation', 'Combustion Blast', 'Ice Spears', 'Water Whip', 'Bloodbending'] // Including all moves
 };
 
 const defenseMovesByBending = {
@@ -109,8 +110,23 @@ const defenseMovesByBending = {
     'Firebender': ['Fire Shield', 'Heat Control', 'Lightning Redirection'],
     'Waterbender': ['Healing Waters', 'Spirit Bending', 'Water Shield'],
     'Nonbender': ['Martial Arts', 'Smoke Bombs', 'Shield Use'],
-    'Avatar': ['Air Shield', 'Earth Wall', 'Fire Shield', 'Water Shield'] // Including all moves 
+    'Avatar': ['Air Shield', 'Flight', 'Spiritual Projection', 'Earth Wall', 'Metal Armor', 'Sand Cloud', 
+            'Fire Shield', 'Heat Control', 'Lightning Redirection', 'Healing Waters', 'Spirit Bending', 'Water Shield'] // Including all moves 
 };
+
+const moveSelectsContainer = document.getElementById('move-selects');
+const characterBendingSelect = document.getElementById('character-bending') as HTMLSelectElement;
+
+if (moveSelectsContainer && characterBendingSelect) {
+    characterBendingSelect.addEventListener('change', () => {
+        const characterBending = characterBendingSelect.value; // Get the current value when it changes
+        if (['Airbender', 'Earthbender', 'Firebender', 'Waterbender', 'Avatar'].includes(characterBending)) {
+            moveSelectsContainer.style.display = 'block';
+        } else {
+            moveSelectsContainer.style.display = 'none';
+        }
+    });
+}
 
 function showOffenseMoves(characterBending: CharacterBending) {
     const offenseMoveSelect = document.getElementById('offense-moves') as HTMLSelectElement;
@@ -155,10 +171,10 @@ document.getElementById('create-character-btn')?.addEventListener('click', (e) =
     console.log('Create character button clicked');
     e.preventDefault(); // Prevent form from submitting traditionally, which refreshes the page
 
-    const bendingSelect = document.getElementById('character-bending') as HTMLSelectElement; // Corrected ID to 'character-bending'
-    
-    const nameInput = document.getElementById('character-name-input') as HTMLInputElement;
+    const nameInput = document.getElementById('character-name') as HTMLInputElement;
     const nationSelect = document.getElementById('nation') as HTMLSelectElement;
+
+    const bendingSelect = document.getElementById('character-bending') as HTMLSelectElement;
     const bendingStyle = bendingSelect.value as CharacterBending;
     console.log(`Form values - Name: ${nameInput.value}, Nation: ${nationSelect.value}, Bending Style: ${bendingStyle}`);
     
@@ -180,7 +196,62 @@ document.getElementById('create-character-btn')?.addEventListener('click', (e) =
     }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('character-form') as HTMLFormElement;
 
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevents the default form submission behavior
+
+            const bendingSelect = document.getElementById('character-bending') as HTMLSelectElement;
+            const nameInput = document.getElementById('character-name') as HTMLInputElement; // Adjusted to match the HTML
+            const nationSelect = document.getElementById('nation') as HTMLSelectElement;
+            
+            if (bendingSelect && nameInput && nationSelect) {
+                const bendingStyle = bendingSelect.value as CharacterBending;
+                const name = nameInput.value;
+                const nation = nationSelect.value;
+
+                const character = handleCharacterSelection(name, nation, bendingStyle);
+                if (character) {
+                    console.log('Character created successfully:', character);
+                    characterManager.addCharacter(character);
+                    console.log('Character created:', character);
+                    console.log('All characters:', characterManager.listCharacters());
+                } else {
+                    console.error("Character creation failed.");
+                }
+            } else {
+                console.error("One or more form elements could not be found.");
+            }
+        });
+    } else {
+        console.error('Character form not found');
+    }
+    // Handling move selections visibility based on bending type
+    const characterBendingSelect = document.getElementById('character-bending') as HTMLSelectElement;
+    const moveSelectsContainer = document.getElementById('move-selects');
+
+    if (characterBendingSelect && moveSelectsContainer) {
+        characterBendingSelect.addEventListener('change', () => {
+            const characterBending = characterBendingSelect.value as CharacterBending;
+            // Adjusting move selections visibility...
+            if (['Airbender', 'Earthbender', 'Firebender', 'Waterbender', 'Avatar'].includes(characterBending)) {
+                moveSelectsContainer.style.display = 'block';
+            } else {
+                moveSelectsContainer.style.display = 'none';
+            }
+        });
+
+        // Initially set move selections based on the default or initial character bending type
+        const initialCharacterBending = characterBendingSelect.value as CharacterBending;
+        populateNations(initialCharacterBending);
+        // Additional initialization logic...
+    } else {
+        console.error("Required elements for bending and move selections were not found.");
+    }
+});
+    
 // After the document has fully loaded
 document.addEventListener('DOMContentLoaded', () => {
 
