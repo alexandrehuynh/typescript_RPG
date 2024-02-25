@@ -160,6 +160,8 @@ document.getElementById('character-bending')?.addEventListener('change', (e) => 
     const selectElement = e.target as HTMLSelectElement;
     const characterBending = selectElement.value as CharacterBending;
     populateNations(characterBending);
+    showOffenseMoves(characterBending);
+    showDefenseMoves(characterBending);
 });
 
 // create character button
@@ -246,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Initially set move selections based on the default or initial character bending type
         const initialCharacterBending = characterBendingSelect.value as CharacterBending;
         populateNations(initialCharacterBending);
+        
         // Additional initialization logic...
     } else {
         console.error("Required elements for bending and move selections were not found.");
